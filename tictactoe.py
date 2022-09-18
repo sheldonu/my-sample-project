@@ -1,238 +1,149 @@
 # Tic-Tac-Toe Assignment -- Sheldon Uchytil
 
-def main():
-    x_turn_1()
-    o_turn_1()
+def print_tic_tac_toe(values):
+	print("{}|{}|{}".format(values[0], values[1], values[2]))
+	print('-+-+-')
 
-def x_square_1():
-    print("""
-    x|2|3
-    -+-+-
-    4|5|6
-    -+-+-
-    7|8|9
-    """)
+	print("{}|{}|{}".format(values[3], values[4], values[5]))
+	print('-+-+-')
 
-def x_square_2():
-    print("""
-    1|x|3
-    -+-+-
-    4|5|6
-    -+-+-
-    7|8|9
-    """)
+	print("{}|{}|{}".format(values[6], values[7], values[8]))
+	print('-+-+-')
 
-def x_square_3():
-    print("""
-    1|2|x
-    -+-+-
-    4|5|6
-    -+-+-
-    7|8|9
-    """)
+def check_win(player_pos, cur_player):
 
-def x_square_4():
-    print("""
-    1|2|3
-    -+-+-
-    x|5|6
-    -+-+-
-    7|8|9
-    """)
+	# All possible winning combinations
+	winner = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
 
-def x_square_5():
-    print("""
-    1|2|3
-    -+-+-
-    4|x|6
-    -+-+-
-    7|8|9
-    """)
+	# Loop to check if any winning combination is satisfied
+	for x in winner:
+		if all(y in player_pos[cur_player] for y in x):
 
-def x_square_6():
-    print("""
-    1|2|3
-    -+-+-
-    4|5|x
-    -+-+-
-    7|8|9
-    """)
+			# Return True if any winning combination satisfies
+			return True
+	# Return False if no combination is satisfied		
+	return False
 
-def x_square_7():
-    print("""
-    1|2|3
-    -+-+-
-    4|5|6
-    -+-+-
-    x|8|9
-    """)
+def check_draw(player_pos):
+	if len(player_pos['x']) + len(player_pos['o']) == 9:
+		return True
+	return False
 
-def x_square_8():
-    print("""
-    1|2|3
-    -+-+-
-    4|5|6
-    -+-+-
-    7|x|9
-    """)
+def single_game(cur_player):
 
-def x_square_9():
-    print("""
-    1|2|3
-    -+-+-
-    4|5|6
-    -+-+-
-    7|8|x
-    """)
+	# Represents the Tic Tac Toe
+	values = [' ' for x in range(9)]
+	
+	# Stores the positions occupied by X and O
+	player_pos = {'x':[], 'o':[]}
+	
+	# Game Loop for a single game of Tic Tac Toe
+	while True:
+		print_tic_tac_toe(values)
+		
+		# Try exception block for MOVE input
+		try:
+			print("Player ", cur_player, " turn. Which box? : ", end="")
+			move = int(input())	
+		except ValueError:
+			print("Wrong Input!!! Try Again")
+			continue
 
-def o_square_1():
-    print("""
-    o|2|3
-    -+-+-
-    4|5|6
-    -+-+-
-    7|8|9
-    """)
+		# Sanity check for MOVE inout
+		if move < 1 or move > 9:
+			print("Wrong Input!!! Try Again")
+			continue
 
-def o_square_2():
-    print("""
-    1|o|3
-    -+-+-
-    4|5|6
-    -+-+-
-    7|8|9
-    """)
+		# Check if the box is not occupied already
+		if values[move-1] != ' ':
+			print("Place already filled. Try again!!")
+			continue
 
-def o_square_3():
-    print("""
-    1|2|o
-    -+-+-
-    4|5|6
-    -+-+-
-    7|8|9
-    """)
+		# Updating grid status 
+		values[move-1] = cur_player
 
-def o_square_4():
-    print("""
-    1|2|3
-    -+-+-
-    o|5|6
-    -+-+-
-    7|8|9
-    """)
+		# Updating player positions
+		player_pos[cur_player].append(move)
 
-def o_square_5():
-    print("""
-    1|2|3
-    -+-+-
-    4|o|6
-    -+-+-
-    7|8|9
-    """)
+		# Function call for checking win
+		if check_win(player_pos, cur_player):
+			print_tic_tac_toe(values)
+			print("Player ", cur_player, " has won the game!!")		
+			print("\n")
+			return cur_player
 
-def o_square_6():
-    print("""
-    1|2|3
-    -+-+-
-    4|5|o
-    -+-+-
-    7|8|9
-    """)
+		# Function call for checking draw game
+		if check_draw(player_pos):
+			print_tic_tac_toe(values)
+			print("Game Drawn")
+			print("\n")
+			return 'D'
 
-def o_square_7():
-    print("""
-    1|2|3
-    -+-+-
-    4|5|6
-    -+-+-
-    o|8|9
-    """)
+		# Switch player moves
+		if cur_player == 'x':
+			cur_player = 'o'
+		else:
+			cur_player = 'x'
 
-def o_square_8():
-    print("""
-    1|2|3
-    -+-+-
-    4|5|6
-    -+-+-
-    7|o|9
-    """)
+if __name__ == "__main__":
 
-def o_square_9():
-    print("""
-    1|2|3
-    -+-+-
-    4|5|6
-    -+-+-
-    7|8|o
-    """)
+	print("Player 1")
+	player1 = input("Enter the name : ")
+	print("\n")
 
-def x_turn_1():
-    Q1x = int(input("x's turn to choose a sqaure (1-9): "))
-    if Q1x == 1:
-        x_square_1()
-        return Q1x
-    elif Q1x == 2:
-        x_square_2()
-        return Q1x
-    elif Q1x == 3:
-        x_square_3()
-        return Q1x
-    elif Q1x == 4:
-        x_square_4()
-        return Q1x
-    elif Q1x == 5:
-        x_square_5()
-        return Q1x
-    elif Q1x == 6:
-        x_square_6()
-        return Q1x
-    elif Q1x == 7:
-        x_square_7()
-        return Q1x
-    elif Q1x == 8:
-        x_square_8()
-        return Q1x
-    elif Q1x == 9:
-        x_square_9()
-        return Q1x
-    else:
-        print('oops, try again.')
-        x_turn_1()
+	print("Player 2")
+	player2 = input("Enter the name : ")
+	print("\n")
+	
+	# Stores the player who chooses X and O
+	cur_player = player1
 
-def o_turn_1():
-    Q1o = int(input("o's turn to choose a sqaure (1-9): "))
-    if Q1o == 1:
-        o_square_1()
-        return Q1o
-    elif Q1o == 2:
-        o_square_2()
-        return Q1o
-    elif Q1o == 3:
-        o_square_3()
-        return Q1o
-    elif Q1o == 4:
-        o_square_4()
-        return Q1o
-    elif Q1o == 5:
-        o_square_5()
-        return Q1o
-    elif Q1o == 6:
-        o_square_6()
-        return Q1o
-    elif Q1o == 7:
-        o_square_7()
-        return Q1o
-    elif Q1o == 8:
-        o_square_8()
-        return Q1o
-    elif Q1o == 9:
-        o_square_9()
-        return Q1o
-    else:
-        print('oops, try again.')
-        o_turn_1()
+	# Stores the choice of players
+	player_choice = {'x' : "", 'o' : ""}
 
+	# Stores the options
+	options = ['x', 'o']
 
+	# Game Loop for a series of Tic Tac Toe
+	# The loop runs until the players quit 
+	while True:
 
+		# Player choice Menu
+		print("Turn to choose for", cur_player)
+		print("Enter 1 for x")
+		print("Enter 2 for o")
+		print("Enter 3 to Quit")
 
-main()
+		# Try exception for CHOICE input
+		try:
+			choice = int(input())	
+		except ValueError:
+			print("Wrong Input!!! Try Again\n")
+			continue
+
+		# Conditions for player choice	
+		if choice == 1:
+			player_choice['x'] = cur_player
+			if cur_player == player1:
+				player_choice['o'] = player2
+			else:
+				player_choice['o'] = player1
+
+		elif choice == 2:
+			player_choice['o'] = cur_player
+			if cur_player == player1:
+				player_choice['x'] = player2
+			else:
+				player_choice['x'] = player1
+
+		else:
+			print("Wrong Choice!!!! Try Again\n")
+
+		# Stores the winner in a single game of Tic Tac Toe
+		winner = single_game(options[choice-1])
+
+		# Switch player who chooses X or O
+		if cur_player == player1:
+			cur_player = player2
+		else:
+			cur_player = player1
